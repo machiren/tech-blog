@@ -13,7 +13,7 @@ interface SsrResultProps {
   result?: any
 }
 
-export async function getStaticProps(): Promise<SsrProps> {
+export async function getServerSideProps(): Promise<SsrProps> {
   // ビルド時刻の取得
   const build_time = new Date().toString();
   const weather = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Tokyo&lang=ja&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`)
