@@ -13,15 +13,12 @@ interface SsgResultProps {
 }
 
 export async function getStaticProps(): Promise<SsgProps> {
-  const res = await fetch('http://localhost:3000/api/hello')
-  const json = await res.json()
-  const name = json.name;
   // ビルド時刻の取得
   const build_time = new Date().toString();
 
   return {
     props: {
-      name,
+      name: 'Ren Machida',
       build_time
     },
     revalidate: 120
@@ -33,7 +30,7 @@ export default function Ssg({ name, build_time }: SsgResultProps){
     <>
       <Layout>
         <Head>
-        <title>SSG TEST</title>
+          <title>SSG TEST</title>
         </Head>
         <h2>
           <Link href="/">
