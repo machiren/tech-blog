@@ -11,7 +11,7 @@ export async function getStaticProps() {
       name: 'Ren Machida',
       build_time
     },
-    revalidate: 120
+    revalidate: 60
   }
 }
 

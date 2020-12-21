@@ -27,7 +27,7 @@ export async function getStaticProps({params}) {
       build_time,
       id: params.id
     },
-    revalidate: 120
+    revalidate: 60
   }
 }
 
