@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { Button, Container, Heading, useToast } from "@chakra-ui/react"
+import { Button, Heading, useToast, useColorMode } from "@chakra-ui/react"
+import Layout from '../../components/layaut';
 
 export async function getStaticProps() {
   // ビルド時刻の取得
@@ -18,9 +19,10 @@ export async function getStaticProps() {
 
 export default function Profile({name, build_time}){
   const toast = useToast();
+  const { colorMode, toggleColorMode } = useColorMode()
+
   return (
-  <>
-    <Container>
+    <Layout>
       <Head>
         <title>Profile</title>
       </Head>
@@ -39,9 +41,6 @@ export default function Profile({name, build_time}){
           <a>Link SSR TEST</a>
         </Link>
       </Heading>
-      <h1>
-
-      </h1>
       <p>私は {name} です</p>
       <p>ビルドした日時は {build_time} です</p>
       <Button
@@ -57,7 +56,6 @@ export default function Profile({name, build_time}){
       >
         トースト！
       </Button>
-    </Container>
-  </>
+    </Layout>
   )
 }
