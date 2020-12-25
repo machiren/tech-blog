@@ -1,4 +1,4 @@
-import Layout from '../../components/layaut';
+import Layout from '../../components/layout';
 import { useRouter } from 'next/router'
 
 export default function Post({name, build_time, id}){

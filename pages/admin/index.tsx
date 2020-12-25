@@ -1,6 +1,6 @@
 import { Box, FormControl, FormLabel, Input, Button, Center, Heading } from '@chakra-ui/react';
 import { useState } from 'react';
-import Layout from '../../components/layaut';
+import Layout from '../../components/layout';
 
 export default function Admin() {
   const [isLoading, setLoading] = useState(false);
