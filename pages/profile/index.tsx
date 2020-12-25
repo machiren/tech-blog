@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { Button, Heading, useToast, useColorMode } from "@chakra-ui/react"
-import Layout from '../../components/layaut';
+import { Button, Heading, useToast } from "@chakra-ui/react"
+import Layout from '../../components/layout';
+import useSWR, { trigger } from 'swr';
 
 export async function getStaticProps() {
   // ビルド時刻の取得
@@ -19,7 +20,11 @@ export async function getStaticProps() {
 
 export default function Profile({name, build_time}){
   const toast = useToast();
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { data, error } = useSWR(
+    '/api/hello',
+    (url: string) => fetch(url).then((res) => res.json()),
+    { initialData: { name: '初期データ' }}
+  );
 
   return (
     <Layout>
@@ -43,13 +48,17 @@ export default function Profile({name, build_time}){
       </Heading>
       <p>私は {name} です</p>
       <p>ビルドした日時は {build_time} です</p>
+      <p>/api/hello/の結果は{data.name}です</p>
+      <Button onClick={() => trigger('/api/hello')}>
+        手動でデータフェッチ！
+      </Button>
       <Button
         onClick={() =>
           toast({
             title: "チャクラUIお試しです",
             description: "learn chakra ui framework",
             status: "success",
-            duration: 4000,
+            duration: 2000,
             isClosable: true,
           })
         }
