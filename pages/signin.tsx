@@ -2,6 +2,7 @@ import { Box, FormControl, FormLabel, Input, InputGroup, Button, Center, Heading
 import { Formik, Form, Field, FormikHelpers, FormikProps } from 'formik';
 import { useState } from 'react';
 import Layout from '../components/layout';
+import Head from 'next/head';
 
 export default function SignIn() {
   const [isShowPassword, setShowPassword] = useState(false);
@@ -15,22 +16,13 @@ export default function SignIn() {
     password: ''
   }
   const onFormSubmit = (values: typeof initialValues, actions: FormikHelpers<typeof initialValues>) => {};
-  const filedValidator = Object.freeze({
-    name: (value) => {
-      if (!value) {
-        return "Name is required";
-      }
-    },
-    password: (value) => {
-      if (!value) {
-        return "Password is required";
-      }
-    }
-  });
 
   return (
     <>
       <Layout>
+        <Head>
+          <title>Sign In | Match</title>
+        </Head>
         <Center marginTop="64px">
           <Heading as="h1">ポートフォリオログイン管理画面</Heading>
         </Center>
@@ -39,13 +31,13 @@ export default function SignIn() {
             {
               (props: FormikProps<any>) => (
                 <Form>
-                  <Field name="name" validate={filedValidator.name}>
+                  <Field name="name">
                     {({field, form}) => {
                       console.log(field)
                       console.log(form)
                       return (
                       <FormControl isRequired isInvalid={form.errors.name && form.touched.name}>
-                        <FormLabel htmlFor="nauser_nameme">ユーザーネーム</FormLabel>
+                        <FormLabel htmlFor="user_name">ユーザーネーム</FormLabel>
                         <InputGroup size="md">
                         <Input {...field} id="user_name" type="username" placeholder="UserName" />
                         <FormErrorMessage>{form.errors.name}</FormErrorMessage>
@@ -53,7 +45,7 @@ export default function SignIn() {
                       </FormControl>)
                     }}
                   </Field>
-                  <Field name="password" validate={filedValidator.password}>
+                  <Field name="password">
                     {({field, form}) => {
                       return (
                         <FormControl isRequired marginY="16px" isInvalid={form.errors.password && form.touched.password}>
