@@ -3,13 +3,13 @@ import { Formik, Form, Field, FormikHelpers, FormikProps } from 'formik';
 import { object, string } from 'yup';
 import { useState } from 'react';
 import Layout from '../components/layout';
+import Head from 'next/head';
 
 export default function SignIn() {
   const [isShowPassword, setShowPassword] = useState(false);
   const signUpSchema = object().shape({
-    name: string()
-    .min(6, '6文字以上で入力してください')
-    .max(24, '24文字以内で入力してください')
+    username: string()
+    .email('有効なメールアドレス形式ではありません')
     .required('ユーザーネームを入力してください'),
     password: string()
     .min(6, '6文字以上で入力してください')
@@ -17,47 +17,51 @@ export default function SignIn() {
     .required('パスワードを入力してください'),
   })
   const loginButtonText = Object.freeze({
-    name: 'ログイン',
-    isLoading: '認証中...',
+    name: '新規登録',
+    isLoading: '登録中..',
     color: 'blue',
   })
   const initialValues = {
-    name: '',
-    password: ''
+    username: '',
+    password: '',
   }
-  const onFormSubmit = (values: typeof initialValues, actions: FormikHelpers<typeof initialValues>) => {};
+  const onFormSubmit = (values: typeof initialValues, actions: FormikHelpers<typeof initialValues>) => {
+    setTimeout(() => {
+      actions.setSubmitting(false)
+    }, 2000);
+    console.log(values)
+    console.log(actions)
+  };
 
   return (
     <>
       <Layout>
+        <Head>
+          <title>Sign Up | Match</title>
+        </Head>
         <Box marginTop="64px" bg="white" w="100%" p={4} color="black" borderWidth="1px" borderRadius="lg">
           <Formik initialValues={initialValues} validationSchema={signUpSchema} onSubmit={onFormSubmit}>
             {
               (props: FormikProps<any>) => (
                 <Form>
-                  <Field name="name">
-                    {({field, form}) => {
-                      console.log(field)
-                      console.log(form)
-                      return (
-                      <FormControl isRequired isInvalid={form.errors.name && form.touched.name}>
-                        <FormLabel htmlFor="name">ユーザーネーム</FormLabel>
+                  <Field name="username">
+                    {({field, form}) => (
+                      <FormControl isRequired isInvalid={form.errors.username && form.touched.username}>
+                        <FormLabel htmlFor="username">ユーザーネーム</FormLabel>
                         <InputGroup size="md">
-                          <Input {...field} id="dummy_name" type="username" disabled={true} style={{display:'none'}} />
-                          <Input {...field} id="name" type="username" placeholder="UserName" autoComplete="off" />
+                          <Input {...field} id="username" type="username" placeholder="email" />
                         </InputGroup>
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                      </FormControl>)
-                    }}
+                        <FormErrorMessage>{form.errors.username}</FormErrorMessage>
+                      </FormControl>
+                      )
+                    }
                   </Field>
                   <Field name="password">
-                    {({field, form}) => {
-                      return (
+                    {({field, form}) => (
                         <FormControl isRequired marginY="16px" isInvalid={form.errors.password && form.touched.password}>
                           <FormLabel htmlFor="password">パスワード</FormLabel>
                           <InputGroup size="md">
-                            <Input {...field} id="dummy_password" type={isShowPassword ? 'text' : 'password'} placeholder="Password" autoComplete="off" />
-                            <Input {...field} id="password" disabled={true} style={{display:'none'}} />
+                            <Input {...field} id="password" type={isShowPassword ? 'text' : 'password'} placeholder="Password" />
                             <InputRightElement width="4.5rem">
                               <Button h="1.75rem" size="sm" onClick={() => setShowPassword(!isShowPassword)}>
                                 {isShowPassword ? "Hide" : "Show"}
@@ -67,10 +71,13 @@ export default function SignIn() {
                           <FormErrorMessage>{form.errors.password}</FormErrorMessage>
                         </FormControl>
                       )
-                    }}
+                    }
+                  </Field>
+                  <Field>
+                    {() => (<Input id="new-password" type='new-password' style={{display:'none', visibility:'hidden'}} />)}
                   </Field>
                   <Center marginTop="24px">
-                    <Button isLoading={props.isSubmitting} loadingText={loginButtonText.isLoading} colorScheme={loginButtonText.color} >{loginButtonText.name}</Button>
+                    <Button type="submit" isLoading={props.isSubmitting} loadingText={loginButtonText.isLoading} colorScheme={loginButtonText.color} >{loginButtonText.name}</Button>
                   </Center>
                 </Form>
               )
